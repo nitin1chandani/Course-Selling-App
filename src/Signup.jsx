@@ -1,64 +1,62 @@
-import { Button } from "@mui/material";
+import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import Card from "@mui/material/Card";
-import Typography from "@mui/material/Typography";
+import { Card, Typography } from "@mui/material";
 import { useState } from "react";
-const Signup = () => {
+
+function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   return (
     <div>
       <div
         style={{
-          paddingTop: 200,
-          marginBottom: 20,
+          paddingTop: 150,
+          marginBottom: 10,
           display: "flex",
           justifyContent: "center",
         }}
       >
         <Typography variant={"h6"}>
-          Welcome to Coursera, Sign up Below
+          Welcome to Coursera. Sign up below
         </Typography>
       </div>
-
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <Card
-          variant="outlined"
-          style={{
-            width: 400,
-            padding: 20,
-          }}
-        >
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <Card varint={"outlined"} style={{ width: 400, padding: 20 }}>
           <TextField
-            fullWidth
-            onChange={(e) => {
-              setEmail(e.target.value);
+            onChange={(evant11) => {
+              let elemt = evant11.target;
+              setEmail(elemt.value);
             }}
+            fullWidth={true}
             label="Email"
-            type="email"
             variant="outlined"
           />
           <br />
           <br />
           <TextField
-            fullWidth
             onChange={(e) => {
               setPassword(e.target.value);
             }}
+            fullWidth={true}
             label="Password"
-            type="password"
             variant="outlined"
+            type={"password"}
           />
-          <br /> <br />
+          <br />
+          <br />
+
           <Button
-            size="large"
+            size={"large"}
             variant="contained"
             onClick={() => {
+              function callback2(data) {
+                localStorage.setItem("token", data.token);
+                window.location = "/";
+              }
+              function callback1(res) {
+                res.json().then(callback2);
+              }
               fetch("http://localhost:3000/admin/signup", {
                 method: "POST",
                 body: JSON.stringify({
@@ -68,26 +66,16 @@ const Signup = () => {
                 headers: {
                   "Content-type": "application/json",
                 },
-              })
-                .then((res) => res.json()) // Return JSON data here
-                .then((data) => {
-                  if (data.token) {
-                    localStorage.setItem("token", data.token);
-                  } else {
-                    // Handle the case when token is not available in the response
-                    console.error("Token not found in response");
-                  }
-                })
-                .catch((error) => {
-                  console.error("Signup error:", error);
-                });
+              }).then(callback1);
             }}
           >
-            Sign Up
+            {" "}
+            Signup
           </Button>
         </Card>
       </div>
     </div>
   );
-};
+}
+
 export default Signup;
